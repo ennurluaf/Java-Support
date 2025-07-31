@@ -3,9 +3,9 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.ennurluaf</groupId>
-  <artifactId>support</artifactId>
+  <artifactId>Java-Support</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>v1.0</version>
 
   <name>support</name>
   <url>http://maven.apache.org</url>
