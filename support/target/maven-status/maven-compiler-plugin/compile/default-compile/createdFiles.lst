@@ -1,7 +1,8 @@
-code/Sprite.class
-code/JSList.class
-code/Size$Pos.class
-code/Size$Pos$PosFunction.class
-code/Drag.class
-code/GContext.class
-code/Size.class
+com/github/ennurluaf/Size.class
+com/github/ennurluaf/GContext.class
+com/github/ennurluaf/Sprite.class
+com/github/ennurluaf/JSList.class
+com/github/ennurluaf/Size$Pos$PosFunction.class
+com/github/ennurluaf/Drag.class
+com/github/ennurluaf/Size$Pos.class
+com/github/ennurluaf/JSList$IntConsumer.class

@@ -1,0 +1,15 @@
+{
+	"netbeans.jdkhome": "/usr/local/sdkman/candidates/java/21.0.2-open",
+	"netbeans.project.jdkhome": "/usr/local/sdkman/candidates/java/21.0.2-open",
+	"java.jdt.ls.java.home": "/usr/local/sdkman/candidates/java/21.0.2-open",
+	"terminal.integrated.env.linux": {
+		"JAVA_HOME": "/usr/local/sdkman/candidates/java/21.0.2-open",
+		"PATH": "/usr/local/sdkman/candidates/java/21.0.2-open/bin:${env:PATH}"
+	},
+	"maven.terminal.customEnv": [
+		{
+			"environmentVariable": "JAVA_HOME",
+			"value": "/usr/local/sdkman/candidates/java/21.0.2-open"
+		}
+	]
+}

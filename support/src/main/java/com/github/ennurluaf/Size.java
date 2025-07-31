@@ -1,4 +1,4 @@
-package code;
+package com.github.ennurluaf;
 
 import java.awt.Point;
 import java.awt.Rectangle;

@@ -1,4 +1,4 @@
-package code;
+package com.github.ennurluaf;
 
 import java.util.*;
 import java.util.function.*;

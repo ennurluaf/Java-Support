@@ -1,4 +1,4 @@
-package code;
+package com.github.ennurluaf;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
