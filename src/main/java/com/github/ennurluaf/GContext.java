@@ -119,7 +119,7 @@ public class GContext {
     }
 
     public <P extends Point2D> GContext translate(P p) {
-        return translate(p.getX(), p.getY());
+        return translate((double) p.getX(), (double) p.getY());
     }
 
 	public GContext translate(Point p) {
@@ -136,8 +136,8 @@ public class GContext {
         return this;
     }
 
-    public <P extends Point2D> GContext rotate(double theta, P p) {
-        g.rotate(theta, p.getX(), p.getY());
+    public <Coords extends Point2D> GContext rotate(double theta, Coords p) {
+        g.rotate(theta, (int) p.getX(), (int) p.getY());
         return this;
     }
 
@@ -167,8 +167,8 @@ public class GContext {
         return this;
     }
 
-	public <P extends Point2D> GContext(String text, P p) {
-		return text(text, p.getX(), p.getY());
+	public <Coords extends Point2D> GContext text(String text, Coords p) {
+		return text(text, (float) p.getX(), (float) p.getY());
 	}
 
 	public GContext text(String text, Point p){
