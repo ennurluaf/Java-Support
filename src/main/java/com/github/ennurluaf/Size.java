@@ -14,10 +14,17 @@ public interface Size {
 
     public static enum Pos {
         SIZE((x, y, w, h) -> rect(0, 0, w, h)),
+
         TOPLEFT((x, y, w, h) -> rect(x, y, w, h)),
         TOPRIGHT((x, y, w, h) -> rect(x + w, y, w, h)),
         BOTTOMLEFT((x, y, w, h) -> rect(x, y + h, w, h)),
         BOTTOMRIGHT((x, y, w, h) -> rect(x + w, y + h, w, h)),
+
+		TOPCENTER((x, y, w, h) -> rect(x + w/2, y, w, h)),
+		BOTTOMCENTER((x, y, w, h) -> rect(x + w/2, y + h, w, h)),
+		LEFTCENTER((x, y, w, h) -> rect(x, y + h/2, w, h)),
+		RIGHTCENTER((x, y, w, h) -> rect(x + w, y + h/2, w, h)),
+
         CENTER((x, y, w, h) -> rect(x + w / 2, y + h / 2, w, h));
         
         public PosFunction posCalc;

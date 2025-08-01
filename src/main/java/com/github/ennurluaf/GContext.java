@@ -1,7 +1,7 @@
 package com.github.ennurluaf;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
+import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 
 public class GContext {
@@ -118,6 +118,14 @@ public class GContext {
         return this;
     }
 
+    public <P extends Point2D> GContext translate(P p) {
+        return translate(p.getX(), p.getY());
+    }
+
+	public GContext translate(Point p) {
+		return translate(p.x, p.y);
+	}
+
     public GContext rotate(double theta) {
         g.rotate(theta);
         return this;
@@ -125,6 +133,16 @@ public class GContext {
 
     public GContext rotate(double theta, int x, int y) {
         g.rotate(theta, x, y);
+        return this;
+    }
+
+    public <P extends Point2D> GContext rotate(double theta, P p) {
+        g.rotate(theta, p.getX(), p.getY());
+        return this;
+    }
+
+    public GContext rotate(double theta, Point p) {
+        g.rotate(theta, p.x, p.y);
         return this;
     }
 
@@ -148,6 +166,14 @@ public class GContext {
         g.drawString(text, x, y);
         return this;
     }
+
+	public <P extends Point2D> GContext(String text, P p) {
+		return text(text, p.getX(), p.getY());
+	}
+
+	public GContext text(String text, Point p){
+		return text(text, p.x, p.y);
+	}
 
     public Point textPos(String text) {
         FontMetrics fm = g.getFontMetrics();

@@ -219,12 +219,8 @@ public class JSList<T> extends ArrayList<T> {
     public void forEach(Consumer<? super T> action) {
         super.forEach(action);
     }
-    
-    public interface IntConsumer<T> {
-        void accept(T t, int index);
-    }
 
-    public void forEach(IntConsumer<T> action) {
+    public void forEach(BiConsumer<T, Integer> action) {
         for (int i = 0; i < this.size(); i++) {
             action.accept(this.get(i), i);
         }
@@ -296,7 +292,7 @@ public class JSList<T> extends ArrayList<T> {
         return array;
     }
 
-    public static void iterate(int range, java.util.function.IntConsumer action) {
+    public static void iterate(int range, IntConsumer action) {
         for (int i = 0; i < range; i++) {
             action.accept(i); 
         }
