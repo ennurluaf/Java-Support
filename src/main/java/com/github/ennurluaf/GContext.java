@@ -50,6 +50,18 @@ public class GContext {
         return this;
     }
 
+    public GContext fill(Color c) {
+        g.setColor(c);
+        fill = true;
+        return this;
+    }
+
+    public GContext stroke(Color c) {
+        g.setColor(c);
+        fill = false;
+        return this;
+    }
+
     public GContext setStrokeWidth(float width) {
         g.setStroke(new BasicStroke(width));
         return this;
@@ -64,6 +76,16 @@ public class GContext {
         fill = false;
         return this;
     }
+
+	public GContext font(Font font) {
+		g.setFont(font);
+		return this;
+	}
+
+	public GContext font(String name, int style, int size) {
+		g.setFont(new Font(name, style, size));
+		return this;
+	}
 
     public GContext ellipse(int x, int y, int w, int h) {
         if (fill)
