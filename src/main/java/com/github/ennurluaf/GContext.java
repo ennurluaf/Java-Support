@@ -12,7 +12,7 @@ public class GContext {
 		BOTTOMLEFT((t, w, h) -> new Point(t.x, t.y1)),
 		BOTTOMRIGHT((t, w, h) -> new Point(t.x1 - w, t.y1)),
 		CENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y2 + h / 2)),
-		TOPCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y + h / 2)),
+		TOPCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y + h)),
 		LEFTCENTER((t, w, h) -> new Point(t.x, t.y + h / 2)),
 		RIGHTCENTER((t, w, h) -> new Point(t.x1 - w, t.y + h / 2)),
 		BOTTOMCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y1 - h));
