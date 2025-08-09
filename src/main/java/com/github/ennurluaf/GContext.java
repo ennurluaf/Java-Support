@@ -23,7 +23,7 @@ public class GContext {
 			this.pos = pos;
 		}
 
-		public Point get(Rectangle2D context, int width, int height) {
+		public Point get(RectangularShape context, int width, int height) {
 			return pos.calc(new Rect(context), width, height);
 		}
 
@@ -32,7 +32,7 @@ public class GContext {
 		}
 
 		private record Rect(int x, int y, int w, int h, int x2, int y2, int w2, int h2, int x1, int y1) {
-			public Rect(Rectangle2D r) {
+			public Rect(RectangularShape r) {
 				this((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight(),
 						(int) (r.getX() + r.getWidth() / 2), (int) (r.getY() + r.getHeight() / 2), 
 						(int) (r.getWidth() / 2), (int) (r.getHeight() / 2), 
@@ -228,12 +228,12 @@ public class GContext {
 		return new Point(-textWidth / 2, textHeight / 2);
 	}
 
-	public Point textPos(String text, Rectangle2D context) {
+	public Point textPos(String text, RectangularShape context) {
 		FontMetrics fm = g.getFontMetrics();
 		return Pos.CENTER.get(context, fm.stringWidth(text), fm.getAscent());
 	}
 
-	public GContext text(String text, Rectangle2D context, Pos pos) {
+	public GContext text(String text, RectangularShape context, Pos pos) {
 		FontMetrics fm = g.getFontMetrics();
 		text(text, pos.get(context, fm.stringWidth(text), fm.getAscent()));
 		return this;
@@ -258,7 +258,7 @@ public class GContext {
 		return this;
 	}
 
-	public GContext rect(Rectangle2D rect) {
+	public GContext rect(RectangularShape rect) {
 		rect((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
 		return this;
 	}
