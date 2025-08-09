@@ -15,7 +15,7 @@ public class GContext {
 		TOPCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y + h)),
 		LEFTCENTER((t, w, h) -> new Point(t.x, t.y + h / 2)),
 		RIGHTCENTER((t, w, h) -> new Point(t.x1 - w, t.y + h / 2)),
-		BOTTOMCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y1 - h));
+		BOTTOMCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y1));
 
 		private POS pos;
 

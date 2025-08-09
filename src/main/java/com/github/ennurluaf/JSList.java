@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 
 public class JSList<T> extends ArrayList<T> {
 
+	public int limit = Integer.MAX_VALUE;
+
     public JSList() {
         super();
     }
@@ -118,6 +120,10 @@ public class JSList<T> extends ArrayList<T> {
     public JSList<T> slice(int start) {
         return slice(start, this.size());
     }   
+
+	public void limit(int limit) {
+		this.limit = limit;
+	}
 
     public JSList<T> concat(JSList<T> other) {
         JSList<T> result = new JSList<>(this);
