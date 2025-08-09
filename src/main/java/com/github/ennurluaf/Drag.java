@@ -59,11 +59,11 @@ public class Drag {
         c.stroke(0,50);
         for (int i = 0; i < cols; i++) {
             int x = i * size + offset.x;
-            c.line(x, 0, x, getWidth());
+            c.line(x, 0, x, width);
         }
         for (int i = 0; i < rows; i++) {
             int y = i * size + offset.y;
-            c.line(0, y, getWidth(), y);
+            c.line(0, y, rows, y);
         }
         c.fill(50).circle((int) origin.x, (int) origin.y, 5);
     }

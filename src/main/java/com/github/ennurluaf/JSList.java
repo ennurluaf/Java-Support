@@ -241,8 +241,9 @@ public class JSList<T> extends ArrayList<T> {
         return super.hashCode();
     }
 
+	@Override
     public String toString() {
-        return "JSList{" + super.toString() + '}';
+        return super.toString();
     }
 
     @SuppressWarnings("unchecked")
