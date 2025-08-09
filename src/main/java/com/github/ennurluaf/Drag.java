@@ -63,7 +63,7 @@ public class Drag {
         }
         for (int i = 0; i < rows; i++) {
             int y = i * size + offset.y;
-            c.line(0, y, rows, y);
+            c.line(0, y, width, y);
         }
         c.fill(50).circle((int) origin.x, (int) origin.y, 5);
     }
