@@ -6,76 +6,111 @@ import java.awt.image.BufferedImage;
 
 public class GContext {
 
-    private Graphics2D g;
-    private AffineTransform af;
-    private boolean fill;
-    public static boolean centered = false;
+	public static enum Pos {
+		TOPLEFT((t, w, h) -> new Point(t.x, t.y1)),
+		TOPRIGHT((t, w, h) -> new Point(t.x1 - w, t.y1)),
+		BOTTOMLEFT((t, w, h) -> new Point(t.x, t.y1)),
+		BOTTOMRIGHT((t, w, h) -> new Point(t.x1 - w, t.y1)),
+		CENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y2 + h / 2)),
+		TOPCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y2 - h / 2)),
+		LEFTCENTER((t, w, h) -> new Point(t.x, t.y + h / 2)),
+		RIGHTCENTER((t, w, h) -> new Point(t.x1 - w, t.y + h / 2)),
+		BOTTOMCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y1 - h));
 
-    public GContext(Graphics2D g) {
-        this.g = g;
-    }
+		private POS pos;
 
-    public GContext(Graphics g) {
-        this.g = (Graphics2D) g;
-    }
+		private Pos(POS pos) {
+			this.pos = pos;
+		}
 
-    public static GContext create(Graphics2D g) {
-        return new GContext(g);
-    }
+		public Point get(Rectangle context, int width, int height) {
+			return pos.calc(new Rect(context), width, height);
+		}
 
-    public Graphics2D getGraphics() {
-        return g;
-    }
+		private interface POS {
+			Point calc(Rect context, int width, int height);
+		}
 
-    private void setColor(int... v) {
-        Color c = Color.BLACK;
-        switch (v.length) {
-            case 1 -> c = new Color(v[0], v[0], v[0]);
-            case 2 -> c = new Color(v[0], v[0], v[0], v[1]);
-            case 3 -> c = new Color(v[0], v[1], v[2]);
-            case 4 -> c = new Color(v[0], v[1], v[2], v[3]);
-        }
-        g.setColor(c);
-    }
+		private record Rect(int x, int y, int w, int h, int x2, int y2, int w2, int h2, int x1, int y1) {
+			public Rect(Rectangle r) {
+				this(r.x, r.y, r.width, r.height,
+						r.x + r.width / 2, r.y + r.height / 2,
+						r.width / 2, r.height / 2,
+						r.x + r.width, r.y + r.height);
+			}
+		}
+	}
 
-    public GContext fill(int... v) {
-        setColor(v);
-        fill = true;
-        return this;
-    }
+	private Graphics2D g;
+	private AffineTransform af;
+	private boolean fill;
+	public static boolean centered = false;
 
-    public GContext stroke(int... v) {
-        setColor(v);
-        fill = false;
-        return this;
-    }
+	public GContext(Graphics2D g) {
+		this.g = g;
+	}
 
-    public GContext fill(Color c) {
-        g.setColor(c);
-        fill = true;
-        return this;
-    }
+	public GContext(Graphics g) {
+		this.g = (Graphics2D) g;
+	}
 
-    public GContext stroke(Color c) {
-        g.setColor(c);
-        fill = false;
-        return this;
-    }
+	public static GContext create(Graphics2D g) {
+		return new GContext(g);
+	}
 
-    public GContext setStrokeWidth(float width) {
-        g.setStroke(new BasicStroke(width));
-        return this;
-    }
+	public Graphics2D getGraphics() {
+		return g;
+	}
 
-    public GContext noStroke() {
-        fill = true;
-        return this;
-    }
+	private void setColor(int... v) {
+		Color c = Color.BLACK;
+		switch (v.length) {
+			case 1 -> c = new Color(v[0], v[0], v[0]);
+			case 2 -> c = new Color(v[0], v[0], v[0], v[1]);
+			case 3 -> c = new Color(v[0], v[1], v[2]);
+			case 4 -> c = new Color(v[0], v[1], v[2], v[3]);
+		}
+		g.setColor(c);
+	}
 
-    public GContext noFill() {
-        fill = false;
-        return this;
-    }
+	public GContext fill(int... v) {
+		setColor(v);
+		fill = true;
+		return this;
+	}
+
+	public GContext stroke(int... v) {
+		setColor(v);
+		fill = false;
+		return this;
+	}
+
+	public GContext fill(Color c) {
+		g.setColor(c);
+		fill = true;
+		return this;
+	}
+
+	public GContext stroke(Color c) {
+		g.setColor(c);
+		fill = false;
+		return this;
+	}
+
+	public GContext setStrokeWidth(float width) {
+		g.setStroke(new BasicStroke(width));
+		return this;
+	}
+
+	public GContext noStroke() {
+		fill = true;
+		return this;
+	}
+
+	public GContext noFill() {
+		fill = false;
+		return this;
+	}
 
 	public GContext font(Font font) {
 		g.setFont(font);
@@ -87,154 +122,136 @@ public class GContext {
 		return this;
 	}
 
-    public GContext ellipse(int x, int y, int w, int h) {
-        if (fill)
-            g.fillOval(x, y, w, h);
-        else
-            g.drawOval(x, y, w, h);
-        return this;
-    }
-
-    public GContext circle(int x, int y, int r) {
-        return ellipse(x - r, y - r, 2 * r, 2 * r);
-    }
-
-    public GContext line(int x1, int y1, int x2, int y2) {
-        g.drawLine(x1, y1, x2, y2);
-        return this;
-    }
-
-    public GContext point(int x, int y) {
-        g.drawLine(x, y, x, y);
-        return this;
-    }
-
-    public GContext roundRect(int x, int y, int w, int h, int arcW, int arcH) {
-        if (fill)
-            g.fillRoundRect(x, y, w, h, arcW, arcH);
-        else
-            g.drawRoundRect(x, y, w, h, arcW, arcH);
-        return this;
-    }
-
-    public GContext save() {
-        af = g.getTransform();
-        return this;
-    }
-
-    public GContext restore() {
-        if (af == null)
-            return null;
-        g.setTransform(af);
-        g.setClip(null);
-        return this;
-    }
-
-    public GContext clip(Shape shape) {
-        g.setClip(shape);
-        return this;
-    }
-
-    public GContext translate(double x, double y) {
-        g.translate(x, y);
-        return this;
-    }
-
-    public <P extends Point2D> GContext translate(P p) {
-        return translate((double) p.getX(), (double) p.getY());
-    }
-
-	public GContext translate(Point p) {
-		return translate(p.x, p.y);
+	public GContext ellipse(int x, int y, int w, int h) {
+		if (fill)
+			g.fillOval(x, y, w, h);
+		else
+			g.drawOval(x, y, w, h);
+		return this;
 	}
 
-    public GContext rotate(double theta) {
-        g.rotate(theta);
-        return this;
-    }
+	public GContext circle(int x, int y, int r) {
+		return ellipse(x - r, y - r, 2 * r, 2 * r);
+	}
 
-    public GContext rotate(double theta, int x, int y) {
-        g.rotate(theta, x, y);
-        return this;
-    }
+	public GContext line(int x1, int y1, int x2, int y2) {
+		g.drawLine(x1, y1, x2, y2);
+		return this;
+	}
 
-    public <Coords extends Point2D> GContext rotate(double theta, Coords p) {
-        g.rotate(theta, (int) p.getX(), (int) p.getY());
-        return this;
-    }
+	public GContext point(int x, int y) {
+		g.drawLine(x, y, x, y);
+		return this;
+	}
 
-    public GContext rotate(double theta, Point p) {
-        g.rotate(theta, p.x, p.y);
-        return this;
-    }
+	public GContext roundRect(int x, int y, int w, int h, int arcW, int arcH) {
+		if (fill)
+			g.fillRoundRect(x, y, w, h, arcW, arcH);
+		else
+			g.drawRoundRect(x, y, w, h, arcW, arcH);
+		return this;
+	}
 
-    public GContext scale(double sx, double sy) {
-        g.scale(sx, sy);
-        return this;
-    }
+	public GContext save() {
+		af = g.getTransform();
+		return this;
+	}
 
-    public GContext scale(double s) {
-        return scale(s, s);
-    }
+	public GContext restore() {
+		if (af == null)
+			return null;
+		g.setTransform(af);
+		g.setClip(null);
+		return this;
+	}
 
-    public GContext text(String text, float x, float y) {
-        if (centered) {
-            FontMetrics fm = g.getFontMetrics();
-            int textWidth = fm.stringWidth(text);
-            int textHeight = fm.getAscent();
-            x -= textWidth / 2f;
-            y += textHeight / 2f;
-        }
-        g.drawString(text, x, y);
-        return this;
-    }
+	public GContext clip(Shape shape) {
+		g.setClip(shape);
+		return this;
+	}
 
-	public <Coords extends Point2D> GContext text(String text, Coords p) {
+	public GContext translate(double x, double y) {
+		g.translate(x, y);
+		return this;
+	}
+
+	public GContext translate(Point2D p) {
+		return translate((double) p.getX(), (double) p.getY());
+	}
+
+	public GContext rotate(double theta) {
+		g.rotate(theta);
+		return this;
+	}
+
+	public GContext rotate(double theta, int x, int y) {
+		g.rotate(theta, x, y);
+		return this;
+	}
+
+	public GContext rotate(double theta, Point2D p) {
+		g.rotate(theta, (int) p.getX(), (int) p.getY());
+		return this;
+	}
+
+	public GContext scale(double sx, double sy) {
+		g.scale(sx, sy);
+		return this;
+	}
+
+	public GContext scale(double s) {
+		return scale(s, s);
+	}
+
+	public GContext text(String text, float x, float y) {
+		g.drawString(text, x, y);
+		return this;
+	}
+
+	public GContext text(String text, Point2D p) {
 		return text(text, (float) p.getX(), (float) p.getY());
 	}
 
-	public GContext text(String text, Point p){
-		return text(text, p.x, p.y);
+	public Point textPos(String text) {
+		FontMetrics fm = g.getFontMetrics();
+		int textWidth = fm.stringWidth(text);
+		int textHeight = fm.getAscent();
+		return new Point(-textWidth / 2, textHeight / 2);
 	}
 
-    public Point textPos(String text) {
-        FontMetrics fm = g.getFontMetrics();
-        int textWidth = fm.stringWidth(text);
-        int textHeight = fm.getAscent();
-        return new Point(-textWidth / 2, textHeight / 2);
-    }
+	public Point textPos(String text, Rectangle context) {
+		FontMetrics fm = g.getFontMetrics();
+		return Pos.CENTER.get(context, fm.stringWidth(text), fm.getAscent());
+	}
 
-    public Point textPos(String text, Rectangle context) {
-        FontMetrics fm = g.getFontMetrics();
-        int x = context.x + context.width / 2;
-        int y = context.y + context.height / 2;
-        int textWidth = fm.stringWidth(text);
-        int textHeight = fm.getAscent();
-        return new Point(x - textWidth / 2, y + textHeight / 2);
-    }
+	public GContext text(String text, Rectangle context, Pos pos) {
+		FontMetrics fm = g.getFontMetrics();
+		text(text, pos.get(context, fm.stringWidth(text), fm.getAscent()));
+		return this;
+	}
 
-    public GContext drawImage(BufferedImage img, int x, int y, int w, int h) {
-        g.drawImage(img, x, y, w, h, null);
-        return this;
-    }
+	public GContext drawImage(BufferedImage img, int x, int y, int w, int h) {
+		g.drawImage(img, x, y, w, h, null);
+		return this;
+	}
 
-    public GContext drawImage(BufferedImage img, int x, int y) {
-        drawImage(img, x, y, img.getWidth(), img.getHeight());
-        return this;
-    }
+	public GContext drawImage(BufferedImage img, int x, int y) {
+		drawImage(img, x, y, img.getWidth(), img.getHeight());
+		return this;
+	}
 
-    public GContext rect(int x, int y, int w, int h) {
-        if (fill) {
-            g.fillRect(x, y, w, h);
-        } else {
-            g.drawRect(x, y, w, h);
-        }
-        return this;
-    }
+	public GContext rect(int x, int y, int w, int h) {
+		if (fill) {
+			g.fillRect(x, y, w, h);
+		} else {
+			g.drawRect(x, y, w, h);
+		}
+		return this;
+	}
 
-    public GContext rect(Rectangle rect) {
-        rect(rect.x, rect.y, rect.width, rect.height);
-        return this;
-    }
+	public GContext rect(Rectangle rect) {
+		rect(rect.x, rect.y, rect.width, rect.height);
+		return this;
+	}
 
 }
