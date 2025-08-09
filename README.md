@@ -44,3 +44,9 @@ A collection of Java utility classes for graphical and interactive applications.
 	```
 	import com.github.youruser.*;
 	```
+---
+## Alternative (jar file)
+
+[Download JAR](https://github.com/ennurluaf/Java-Support/target/Java-Support-v1.1.2.jar)
+
+
