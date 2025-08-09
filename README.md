@@ -47,6 +47,6 @@ A collection of Java utility classes for graphical and interactive applications.
 ---
 ## Alternative (jar file)
 
-[Download JAR](https://github.com/ennurluaf/Java-Support/target/Java-Support-v1.2jar)
+[Download JAR](https://github.com/ennurluaf/Java-Support/target/Java-Support-v1.2.jar)
 
 
