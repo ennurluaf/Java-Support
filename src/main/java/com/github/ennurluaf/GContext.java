@@ -23,7 +23,7 @@ public class GContext {
 			this.pos = pos;
 		}
 
-		public Point get(Rectangle context, int width, int height) {
+		public Point get(Rectangle2D context, int width, int height) {
 			return pos.calc(new Rect(context), width, height);
 		}
 
@@ -32,11 +32,11 @@ public class GContext {
 		}
 
 		private record Rect(int x, int y, int w, int h, int x2, int y2, int w2, int h2, int x1, int y1) {
-			public Rect(Rectangle r) {
-				this(r.x, r.y, r.width, r.height,
-						r.x + r.width / 2, r.y + r.height / 2,
-						r.width / 2, r.height / 2,
-						r.x + r.width, r.y + r.height);
+			public Rect(Rectangle2D r) {
+				this(r.getX(), r.getY(), r.getWidth(), r.getHeight(),
+						r.getX() + r.getWidth() / 2, r.getY() + r.getHeight() / 2,
+						r.getWidth() / 2, r.getHeight() / 2,
+						r.getX() + r.getWidth(), r.getY() + r.getHeight());
 			}
 		}
 	}
@@ -144,6 +144,12 @@ public class GContext {
 		return this;
 	}
 
+	public GContext shape(Shape spape) {
+		if (fill) g.fill(spape);
+		else g.draw(shape);
+		return this;
+	}
+
 	public GContext roundRect(int x, int y, int w, int h, int arcW, int arcH) {
 		if (fill)
 			g.fillRoundRect(x, y, w, h, arcW, arcH);
@@ -219,12 +225,12 @@ public class GContext {
 		return new Point(-textWidth / 2, textHeight / 2);
 	}
 
-	public Point textPos(String text, Rectangle context) {
+	public Point textPos(String text, Rectangle2D context) {
 		FontMetrics fm = g.getFontMetrics();
 		return Pos.CENTER.get(context, fm.stringWidth(text), fm.getAscent());
 	}
 
-	public GContext text(String text, Rectangle context, Pos pos) {
+	public GContext text(String text, Rectangle2D context, Pos pos) {
 		FontMetrics fm = g.getFontMetrics();
 		text(text, pos.get(context, fm.stringWidth(text), fm.getAscent()));
 		return this;
@@ -249,8 +255,8 @@ public class GContext {
 		return this;
 	}
 
-	public GContext rect(Rectangle rect) {
-		rect(rect.x, rect.y, rect.width, rect.height);
+	public GContext rect(Rectangle2D rect) {
+		rect((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
 		return this;
 	}
 
