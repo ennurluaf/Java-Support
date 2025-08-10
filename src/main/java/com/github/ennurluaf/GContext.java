@@ -24,8 +24,8 @@ public class GContext {
 			this.pos = pos;
 		}
 
-		public Point get(RectangularShape context, int width, int height) {
-			return pos.calc(new Rect(context), width, height);
+		public Point get(Rectangle2D context, Dimension size) {
+			return pos.calc(new Rect(context), size.width, size.height);
 		}
 
 		private interface POS {
@@ -33,7 +33,7 @@ public class GContext {
 		}
 
 		private record Rect(int x, int y, int w, int h, int x2, int y2, int w2, int h2, int x1, int y1) {
-			public Rect(RectangularShape r) {
+			public Rect(Rectangle2D r) {
 				this((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight(),
 						(int) (r.getX() + r.getWidth() / 2), (int) (r.getY() + r.getHeight() / 2),
 						(int) (r.getWidth() / 2), (int) (r.getHeight() / 2),
@@ -222,21 +222,15 @@ public class GContext {
 		return text(text, (float) p.getX(), (float) p.getY());
 	}
 
-	public Point textPos(String text) {
+	public Dimension textPos(String text) {
 		FontMetrics fm = g.getFontMetrics();
 		int textWidth = fm.stringWidth(text);
-		int textHeight = fm.getAscent();
-		return new Point(-textWidth / 2, textHeight / 2);
+		int textHeight = fm.getAscent() + fm.getDescent();
+		return new Dimension(textWidth, textHeight);
 	}
 
-	public Point textPos(String text, RectangularShape context) {
-		FontMetrics fm = g.getFontMetrics();
-		return Pos.CENTER.get(context, fm.stringWidth(text), fm.getAscent());
-	}
-
-	public GContext text(String text, RectangularShape context, Pos pos) {
-		FontMetrics fm = g.getFontMetrics();
-		text(text, pos.get(context, fm.stringWidth(text), fm.getAscent()));
+	public GContext text(String text, Rectangle2D context, Pos pos) {
+		text(text, pos.get(context, textPos(text)));
 		return this;
 	}
 
