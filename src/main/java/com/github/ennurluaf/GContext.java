@@ -7,10 +7,11 @@ import java.awt.image.BufferedImage;
 public class GContext {
 
 	public static enum Pos {
-		TOPLEFT((t, w, h) -> new Point(t.x, t.y1)),
-		TOPRIGHT((t, w, h) -> new Point(t.x1 - w, t.y1)),
+		TOPLEFT((t, w, h) -> new Point(t.x, t.y + h)),
+		TOPRIGHT((t, w, h) -> new Point(t.x1 - w, t.y + h)),
 		BOTTOMLEFT((t, w, h) -> new Point(t.x, t.y1)),
 		BOTTOMRIGHT((t, w, h) -> new Point(t.x1 - w, t.y1)),
+
 		CENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y2 + h / 2)),
 		TOPCENTER((t, w, h) -> new Point(t.x2 - w / 2, t.y + h)),
 		LEFTCENTER((t, w, h) -> new Point(t.x, t.y + h / 2)),
@@ -34,8 +35,8 @@ public class GContext {
 		private record Rect(int x, int y, int w, int h, int x2, int y2, int w2, int h2, int x1, int y1) {
 			public Rect(RectangularShape r) {
 				this((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight(),
-						(int) (r.getX() + r.getWidth() / 2), (int) (r.getY() + r.getHeight() / 2), 
-						(int) (r.getWidth() / 2), (int) (r.getHeight() / 2), 
+						(int) (r.getX() + r.getWidth() / 2), (int) (r.getY() + r.getHeight() / 2),
+						(int) (r.getWidth() / 2), (int) (r.getHeight() / 2),
 						(int) (r.getX() + r.getWidth()), (int) (r.getY() + r.getHeight()));
 			}
 		}
