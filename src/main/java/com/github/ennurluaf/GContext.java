@@ -225,7 +225,7 @@ public class GContext {
 	public Dimension textPos(String text) {
 		FontMetrics fm = g.getFontMetrics();
 		int textWidth = fm.stringWidth(text);
-		int textHeight = fm.getAscent() + fm.getDescent();
+		int textHeight = fm.getHeight();
 		return new Dimension(textWidth, textHeight);
 	}
 
