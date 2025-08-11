@@ -1,9 +1,7 @@
 package com.github.ennurluaf;
 
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.*;
 
 public class JSList<T> extends ArrayList<T> {
 
@@ -13,9 +11,13 @@ public class JSList<T> extends ArrayList<T> {
         super();
     }
 
+    public JSList(int capacity) {
+        super(capacity);
+    }
+
     @SuppressWarnings("unchecked")
     public JSList(T... elements) {
-        super();
+        super(elements.length);
         for (T t : elements) {
             this.add(t);
         }
@@ -25,7 +27,7 @@ public class JSList<T> extends ArrayList<T> {
         super(list);
     }
 
-    public <R> JSList<R> map(Function<T, R> function) {
+    public <R> JSList<R> map(Function.Op1<T, R> function) {
         JSList<R> result = new JSList<>();
         for (T item : this) {
             result.add(function.apply(item));
@@ -33,7 +35,7 @@ public class JSList<T> extends ArrayList<T> {
         return result;
     }
 
-    public <R> JSList<R> map(BiFunction<T, Integer, R> function) {
+    public <R> JSList<R> map(Function.Op2<T, Integer, R> function) {
         JSList<R> result = new JSList<>();
         for (int i = 0; i < this.size(); i++) {
             result.add(function.apply(this.get(i), i));
@@ -41,34 +43,34 @@ public class JSList<T> extends ArrayList<T> {
         return result;
     }
 
-    public JSList<T> filter(Predicate<T> predicate) {
+    public JSList<T> filter(Function.Op1<T, Boolean> predicate) {
         JSList<T> result = new JSList<>();
         for (T item : this) {
-            if (predicate.test(item)) 
+            if (predicate.apply(item)) 
                 result.add(item);
         }
         return result;
     }
 
-    public T find(Predicate<T> predicate) {
+    public T find(Function.Op1<T, Boolean> predicate) {
         for (T item : this) {
-            if (predicate.test(item))
+            if (predicate.apply(item))
                 return item;
         }
         return null;
     }
 
-    public boolean some(Predicate<T> predicate) {
+    public boolean some(Function.Op1<T, Boolean> predicate) {
         for (T item : this) {
-            if (predicate.test(item))
+            if (predicate.apply(item))
                 return true;
         }
         return false;
     }
 
-    public boolean all(Predicate<T> predicate) {
+    public boolean all(Function.Op1<T, Boolean> predicate) {
         for (T item : this) {
-            if (!predicate.test(item))
+            if (!predicate.apply(item))
                 return false;
         }
         return true;
@@ -85,7 +87,7 @@ public class JSList<T> extends ArrayList<T> {
         super.sort(comparator);
     }
 
-    public T reduce(BinaryOperator<T> accumulator) {
+    public T reduce(Function.Op2<T, T, T> accumulator) {
         if (this.isEmpty())
             throw new NoSuchElementException("Reduce of empty array with no initial value");
         T result = this.get(0);
@@ -95,7 +97,7 @@ public class JSList<T> extends ArrayList<T> {
         return result;
     }
 
-    public <U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator) {
+    public <U> U reduce(U identity, Function.Op2<U, T, U> accumulator) {
         U result = identity;
         for (T item : this) {
             result = accumulator.apply(result, item);
@@ -103,7 +105,7 @@ public class JSList<T> extends ArrayList<T> {
         return result;
     }
 
-    public <R> JSList<R> flatMap(Function<T, JSList<R>> mapper) {
+    public <R> JSList<R> flatMap(Function.Op1<T, JSList<R>> mapper) {
         JSList<R> result = new JSList<>();
         for (T item : this) {
             result.addAll(mapper.apply(item));
@@ -222,18 +224,18 @@ public class JSList<T> extends ArrayList<T> {
         return super.parallelStream();
     }
 
-    public void forEach(Consumer<? super T> action) {
-        super.forEach(action);
+    public void forEach(Function.Op1<? super T, Void> action) {
+        super.forEach(action::apply);
     }
 
-    public void forEach(BiConsumer<T, Integer> action) {
+    public void forEach(Function.Op2<? super T, Integer, Void> action) {
         for (int i = 0; i < this.size(); i++) {
-            action.accept(this.get(i), i);
+            action.apply(this.get(i), i);
         }
     }
 
-    public boolean removeIf(Predicate<? super T> filter) {
-        return super.removeIf(filter);
+    public boolean removeIf(Function.Op1<? super T, Boolean> filter) {
+        return super.removeIf(filter::apply);
     }
 
     public boolean equals(Object o) {
@@ -299,9 +301,9 @@ public class JSList<T> extends ArrayList<T> {
         return array;
     }
 
-    public static void iterate(int range, IntConsumer action) {
+    public static void iterate(int range, Function.Op1<Integer, Void> action) {
         for (int i = 0; i < range; i++) {
-            action.accept(i); 
+            action.apply(i); 
         }
     }
 

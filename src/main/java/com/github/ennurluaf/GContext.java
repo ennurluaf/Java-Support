@@ -35,9 +35,9 @@ public class GContext {
 		private record Rect(int x, int y, int w, int h, int x2, int y2, int w2, int h2, int x1, int y1) {
 			public Rect(Rectangle2D r) {
 				this((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight(),
-						(int) (r.getX() + r.getWidth() / 2), (int) (r.getY() + r.getHeight() / 2),
-						(int) (r.getWidth() / 2), (int) (r.getHeight() / 2),
-						(int) (r.getX() + r.getWidth()), (int) (r.getY() + r.getHeight()));
+					(int) (r.getX() + r.getWidth() / 2), (int) (r.getY() + r.getHeight() / 2),
+					(int) (r.getWidth() / 2), (int) (r.getHeight() / 2),
+					(int) (r.getX() + r.getWidth()), (int) (r.getY() + r.getHeight()));
 			}
 		}
 	}
@@ -100,16 +100,6 @@ public class GContext {
 
 	public GContext setStrokeWidth(float width) {
 		g.setStroke(new BasicStroke(width));
-		return this;
-	}
-
-	public GContext noStroke() {
-		fill = true;
-		return this;
-	}
-
-	public GContext noFill() {
-		fill = false;
 		return this;
 	}
 
