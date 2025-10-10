@@ -27,7 +27,7 @@ public class Drag {
 
     public Double getMouse(Point mouse) {
         return new Double(
-            mouse.x - origin.x, mouse.y - origin.y
+                mouse.x - origin.x, mouse.y - origin.y
         );
     }
 
@@ -47,7 +47,7 @@ public class Drag {
     public void release() {
         this.active = false;
     }
-    
+
     public Point getLineOffset() {
         int x = (int) origin.x - (int) (origin.x / this.size) * this.size;
         int y = (int) origin.y - (int) (origin.y / this.size) * this.size;
@@ -55,14 +55,14 @@ public class Drag {
     }
 
     public void draw(GContext c) {
-        var offset = getLineOffset();
-        c.stroke(0,50);
+        var lineOffset = getLineOffset();
+        c.stroke(0, 50);
         for (int i = 0; i < cols; i++) {
-            int x = i * size + offset.x;
+            int x = i * size + lineOffset.x;
             c.line(x, 0, x, width);
         }
         for (int i = 0; i < rows; i++) {
-            int y = i * size + offset.y;
+            int y = i * size + lineOffset.y;
             c.line(0, y, width, y);
         }
         c.fill(50).circle((int) origin.x, (int) origin.y, 5);
