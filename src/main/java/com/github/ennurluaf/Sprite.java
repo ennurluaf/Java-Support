@@ -1,9 +1,10 @@
 package com.github.ennurluaf;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-public class Sprite extends BufferedImage implements Size{
+public class Sprite extends BufferedImage implements Size {
 
     public Sprite(int width, int height) {
         super(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -27,6 +28,10 @@ public class Sprite extends BufferedImage implements Size{
         return Pos.TOPLEFT.calcPos(this, x, y);
     }
 
+    public DRect getDRect(Pos pos, double x, double y) {
+        return pos.calcPosD(this, x, y);
+    }
+
     public Rectangle getRect() {
         return Pos.SIZE.posCalc.getPos(0, 0, getWidth(), getHeight());
     }
@@ -37,9 +42,19 @@ public class Sprite extends BufferedImage implements Size{
         return result;
     }
 
+    public Sprite sub(int x, int y, int width, int height) {
+        return new Sprite(this.getSubimage(x, y, width, height));
+    }
+
     public Sprite resize(int width, int height) {
         Sprite result = new Sprite(width, height);
         result.create().drawImage(this, 0, 0, width, height);
+        return result;
+    }
+
+    public Sprite fill(Color c) {
+        Sprite result = new Sprite(getWidth(), getHeight());
+        result.create().fill(c).rect(0, 0, getWidth(), getHeight()).dispose();
         return result;
     }
 
