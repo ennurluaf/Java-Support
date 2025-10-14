@@ -69,4 +69,9 @@ public class Sprite extends BufferedImage implements Size {
         c.drawImage(this, x, y);
     }
 
+    @Override
+    public String toString() {
+        return "Sprite(" + getWidth() + "x" + getHeight() + ")";
+    }
+
 }

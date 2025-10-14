@@ -21,6 +21,10 @@ public class Vector {
         this.y = y;
     }
 
+    public Vector copy() {
+        return new Vector(this.x, this.y, this.z);
+    }
+
     public Vector add(Vector v) {
         this.x += v.x;
         this.y += v.y;

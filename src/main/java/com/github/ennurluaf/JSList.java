@@ -1,11 +1,24 @@
 package com.github.ennurluaf;
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JSList<T> extends ArrayList<T> {
 
-	public int limit = Integer.MAX_VALUE;
+    public int limit = Integer.MAX_VALUE;
 
     public JSList() {
         super();
@@ -18,9 +31,7 @@ public class JSList<T> extends ArrayList<T> {
     @SuppressWarnings("unchecked")
     public JSList(T... elements) {
         super(elements.length);
-        for (T t : elements) {
-            this.add(t);
-        }
+        this.addAll(Arrays.asList(elements));
     }
 
     public JSList(List<T> list) {
@@ -46,50 +57,57 @@ public class JSList<T> extends ArrayList<T> {
     public JSList<T> filter(Function.Op1<T, Boolean> predicate) {
         JSList<T> result = new JSList<>();
         for (T item : this) {
-            if (predicate.apply(item)) 
+            if (predicate.apply(item)) {
                 result.add(item);
+            }
         }
         return result;
     }
 
     public T find(Function.Op1<T, Boolean> predicate) {
         for (T item : this) {
-            if (predicate.apply(item))
+            if (predicate.apply(item)) {
                 return item;
+            }
         }
         return null;
     }
 
     public boolean some(Function.Op1<T, Boolean> predicate) {
         for (T item : this) {
-            if (predicate.apply(item))
+            if (predicate.apply(item)) {
                 return true;
+            }
         }
         return false;
     }
 
     public boolean all(Function.Op1<T, Boolean> predicate) {
         for (T item : this) {
-            if (!predicate.apply(item))
+            if (!predicate.apply(item)) {
                 return false;
+            }
         }
         return true;
     }
 
     @SuppressWarnings("unchecked")
     public void sort() {
-        if (this.isEmpty() || !(this.get(0) instanceof Comparable))
+        if (this.isEmpty() || !(this.get(0) instanceof Comparable)) {
             throw new IllegalStateException("Elements must implement Comparable or use a Comparator");
+        }
         this.sort((Comparator<? super T>) Comparator.naturalOrder());
     }
 
+    @Override
     public void sort(Comparator<? super T> comparator) {
         super.sort(comparator);
     }
 
     public T reduce(Function.Op2<T, T, T> accumulator) {
-        if (this.isEmpty())
+        if (this.isEmpty()) {
             throw new NoSuchElementException("Reduce of empty array with no initial value");
+        }
         T result = this.get(0);
         for (int i = 1; i < this.size(); i++) {
             result = accumulator.apply(result, this.get(i));
@@ -114,31 +132,35 @@ public class JSList<T> extends ArrayList<T> {
     }
 
     public JSList<T> slice(int start, int end) {
-        if (start < 0) start = 0;
-        if (end > this.size()) end = this.size();
+        if (start < 0) {
+            start = 0;
+        }
+        if (end > this.size()) {
+            end = this.size();
+        }
         return new JSList<>(this.subList(start, end));
     }
 
     public JSList<T> slice(int start) {
         return slice(start, this.size());
-    }   
+    }
 
-	public void limit(int limit) {
-		this.limit = limit;
-	}
+    public void limit(int limit) {
+        this.limit = limit;
+    }
 
     public JSList<T> concat(JSList<T> other) {
         JSList<T> result = new JSList<>(this);
         result.addAll(other);
         return result;
-    }   
+    }
 
     @SuppressWarnings("unchecked")
     public JSList<T> concat(T... elements) {
         JSList<T> result = new JSList<>(this);
         Collections.addAll(result, elements);
         return result;
-    }   
+    }
 
     public JSList<T> reverse() {
         JSList<T> result = new JSList<>(this);
@@ -147,88 +169,110 @@ public class JSList<T> extends ArrayList<T> {
     }
 
     public T first() {
-        if (this.isEmpty()) return null;
+        if (this.isEmpty()) {
+            return null;
+        }
         return this.get(0);
     }
 
     public T last() {
-        if (this.isEmpty()) return null;
+        if (this.isEmpty()) {
+            return null;
+        }
         return this.get(this.size() - 1);
     }
 
+    @Override
     public boolean isEmpty() {
         return this.size() == 0;
     }
 
+    @Override
     public int size() {
         return super.size();
     }
 
+    @Override
     public T get(int index) {
         return super.get(index);
     }
 
+    @Override
     public boolean add(T item) {
         return super.add(item);
-    }       
+    }
 
+    @Override
     public void add(int index, T item) {
         super.add(index, item);
     }
 
+    @Override
     public boolean remove(Object item) {
         return super.remove(item);
     }
 
+    @Override
     public T remove(int index) {
         return super.remove(index);
     }
 
+    @Override
     public void clear() {
         super.clear();
     }
 
+    @Override
     public boolean contains(Object item) {
         return super.contains(item);
     }
 
+    @Override
     public int indexOf(Object item) {
         return super.indexOf(item);
     }
 
+    @Override
     public int lastIndexOf(Object item) {
         return super.lastIndexOf(item);
     }
 
+    @Override
     public Object[] toArray() {
         return super.toArray();
     }
 
+    @Override
+    @SuppressWarnings("SuspiciousToArrayCall")
     public <R> R[] toArray(R[] a) {
         return super.toArray(a);
     }
 
+    @Override
     public Iterator<T> iterator() {
         return super.iterator();
     }
 
+    @Override
     public Spliterator<T> spliterator() {
         return super.spliterator();
     }
 
+    @Override
     public Stream<T> stream() {
         return super.stream();
     }
 
+    @Override
     public Stream<T> parallelStream() {
         return super.parallelStream();
     }
 
-    public void forEach(Function.Op1<? super T, Void> action) {
+    public void forEach(Function.VoidOp1<? super T> action) {
         super.forEach(action::apply);
     }
 
-    public void forEach(Function.Op2<? super T, Integer, Void> action) {
+    public void forEach(Function.VoidOp2<? super T, Integer> action) {
         for (int i = 0; i < this.size(); i++) {
             action.apply(this.get(i), i);
         }
@@ -238,18 +282,24 @@ public class JSList<T> extends ArrayList<T> {
         return super.removeIf(filter::apply);
     }
 
+    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof JSList)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof JSList)) {
+            return false;
+        }
         JSList<?> JSList = (JSList<?>) o;
         return super.equals(JSList);
     }
 
+    @Override
     public int hashCode() {
         return super.hashCode();
     }
 
-	@Override
+    @Override
     public String toString() {
         return super.toString();
     }
@@ -284,26 +334,22 @@ public class JSList<T> extends ArrayList<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> JSList<T> range(int start, int end) {
-        JSList<T> array = new JSList<>();
-        for (int i = start; i < end; i++) {
-            array.add((T) Integer.valueOf(i));
-        }
-        return array;
+    public static JSList<Integer> range(int start, int end) {
+        return range(start, end, 1);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> JSList<T> range(int start, int end, int step) {
-        JSList<T> array = new JSList<>();
+    public static JSList<Integer> range(int start, int end, int step) {
+        JSList<Integer> array = new JSList<>();
         for (int i = start; i < end; i += step) {
-            array.add((T) Integer.valueOf(i));
+            array.add(i);
         }
         return array;
     }
 
     public static void iterate(int range, Function.Op1<Integer, Void> action) {
         for (int i = 0; i < range; i++) {
-            action.apply(i); 
+            action.apply(i);
         }
     }
 

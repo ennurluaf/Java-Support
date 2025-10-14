@@ -1,5 +1,6 @@
 package com.github.ennurluaf;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -13,10 +14,12 @@ public abstract class Panel extends JPanel implements Runnable, MouseListener, M
     protected Clock clock;
     protected double deltaTime;
     protected Thread thread;
+
     protected String name;
     protected int width, height;
 
     public Panel(String name, int width, int height) {
+        this.setPreferredSize(new Dimension(width, height));
         this.clock = new Clock();
         this.deltaTime = 0.0;
         this.name = name;
@@ -40,7 +43,6 @@ public abstract class Panel extends JPanel implements Runnable, MouseListener, M
         JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
-        frame.setSize(width, height);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.addKeyListener(this);

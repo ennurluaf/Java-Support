@@ -34,7 +34,6 @@ public interface Size {
         public interface PosFunction {
 
             Rect getPos(int x, int y, int w, int h);
-
         }
 
         private static Rect rect(int x, int y, int w, int h) {
