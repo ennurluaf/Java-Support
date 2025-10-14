@@ -58,6 +58,13 @@ public class Sprite extends BufferedImage implements Size {
         return result;
     }
 
+    public Sprite flip(boolean horizontal, boolean vertical) {
+        Sprite result = new Sprite(getWidth(), getHeight());
+        result.create().scale(horizontal ? -1 : 1, vertical ? -1 : 1)
+                .drawImage(this, horizontal ? -getWidth() : 0, vertical ? -getHeight() : 0).dispose();
+        return result;
+    }
+
     public void draw(GContext c, int x, int y) {
         c.drawImage(this, x, y);
     }

@@ -2,6 +2,7 @@ com\github\ennurluaf\Clock.class
 com\github\ennurluaf\DRect.class
 com\github\ennurluaf\Function$Op2.class
 com\github\ennurluaf\GContext$Pos.class
+com\github\ennurluaf\Panel.class
 com\github\ennurluaf\Rect.class
 com\github\ennurluaf\Function$Op1.class
 com\github\ennurluaf\GContext$Pos$POS.class
