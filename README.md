@@ -34,15 +34,15 @@ A collection of Java utility classes for graphical and interactive applications.
 	Add to dependencies
 	```
 	<dependency>
-		<groupId>com.github.youruser</groupId>
+		<groupId>com.github.ennurluaf</groupId>
 		<artifactId>Java-Support</artifactId>
-		<version>Tag</version>
+		<version>v1.5</version>
 	</dependency>
 	```
 
 2. Second step
 	```
-	import com.github.youruser.*;
+	import com.github.ennurluaf.*;
 	```
 ---
 ## Alternative (jar file)
